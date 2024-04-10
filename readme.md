@@ -114,10 +114,11 @@ terraform plan
 terraform apply
 ```
 
-if you need kubeconfig
+get need kubeconfig && wordpress
 
 ```
 terraform output -raw kube_config > aks_kubeconfig
+kubectl --kubeconfig=aks_kubeconfig get svc
 ```
 
 ## ref.
