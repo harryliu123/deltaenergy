@@ -135,6 +135,7 @@ resource "kubernetes_persistent_volume_claim" "mariadb-pvc" {
     }
   }
   spec {
+#   storage_class_name = "managed-csi"
     access_modes = ["ReadWriteOnce"]
     resources {
       requests = {
@@ -169,8 +170,8 @@ resource "kubernetes_deployment" "mariadb" {
       spec {
         volume {
           name = "mariadb-pvc"
-#          persistent_volume_claim {
-#            claim_name = azure-storageclass
+#         persistent_volume_claim {
+#            claim_name = kubernetes_persistent_volume_claim.mariadb-pvc.metadata.0.name
 #          }
         }
         
