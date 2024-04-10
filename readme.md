@@ -96,7 +96,7 @@ ssh-keygen -t rsa -b 4096
 ### File structure
 
     為了安全起見並不會上傳 .connection.env && terraform.tfvars
-
+```
  └── azure
   ├── .connection.env
   ├── main.tf
@@ -104,7 +104,7 @@ ssh-keygen -t rsa -b 4096
   ├── providers.tf
   ├── terraform.tfvars
   └── variables.tf
-
+```
 ### Terraform Run
 
 ```
