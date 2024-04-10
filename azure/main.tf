@@ -68,7 +68,10 @@
     
 # 定義Kubernetes服務
 provider "kubernetes" {
-  config_path = "~/.kube/config"
+  host                   = azurerm_kubernetes_cluster.k8s.kube_config.0.host
+  client_certificate     = base64decode(azurerm_kubernetes_cluster.k8s.kube_config.0.client_certificate)
+  client_key             = base64decode(azurerm_kubernetes_cluster.k8s.kube_config.0.client_key)
+  cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.k8s.kube_config.0.cluster_ca_certificate)
 }
 
 # 部署WordPress到AKS
@@ -102,7 +105,11 @@ resource "kubernetes_deployment" "wordpress" {
             name  = "WORDPRESS_DB_HOST"
             value = "mariadb-service"
           }
-
+          
+          env {
+            name  = "WORDPRESS_DB_USER"
+            value = "wordpress"
+          }
           env {
             name  = "WORDPRESS_DB_PASSWORD"
             value = "P@ssw0rd"
@@ -176,6 +183,21 @@ resource "kubernetes_deployment" "mariadb" {
             value = "P@ssw0rd"
           }
 
+          env {
+            name  = "MARIADB_DATABASE"
+            value = "wordpress"
+          }         
+
+          env {
+            name  = "MARIADB_USER"
+            value = "wordpress"
+          }  
+          
+          env {
+            name  = "MARIADB_PASSWORD"
+            value = "P@ssw0rd"
+          }  
+          
           port {
             container_port = 3306
           }
