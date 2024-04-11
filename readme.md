@@ -96,15 +96,15 @@ ssh-keygen -t rsa -b 4096
 ### File structure
 
     為了安全起見並不會上傳 .connection.env && terraform.tfvars
-
-> └── azure
->  ├── .connection.env
->  ├── main.tf
->  ├── outputs.tf
->  ├── providers.tf
->  ├── terraform.tfvars
->  └── variables.tf
-
+```
+ └── azure
+  ├── .connection.env
+  ├── main.tf
+  ├── outputs.tf
+  ├── providers.tf
+  ├── terraform.tfvars
+  └── variables.tf
+```
 ### Terraform Run
 
 ```
@@ -114,7 +114,7 @@ terraform plan
 terraform apply
 ```
 
-if you need kubeconfig
+### Get kubeconfig && get LoadBalancer IP
 
 ```
 terraform output -raw kube_config > aks_kubeconfig
