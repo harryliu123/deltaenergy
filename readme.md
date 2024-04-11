@@ -96,15 +96,15 @@ ssh-keygen -t rsa -b 4096
 ### File structure
 
     為了安全起見並不會上傳 .connection.env && terraform.tfvars
-```
- └── azure
-  ├── .connection.env
-  ├── main.tf
-  ├── outputs.tf
-  ├── providers.tf
-  ├── terraform.tfvars
-  └── variables.tf
-```
+
+> └── azure
+>  ├── .connection.env
+>  ├── main.tf
+>  ├── outputs.tf
+>  ├── providers.tf
+>  ├── terraform.tfvars
+>  └── variables.tf
+
 ### Terraform Run
 
 ```
@@ -114,11 +114,27 @@ terraform plan
 terraform apply
 ```
 
-get need kubeconfig && wordpress
+if you need kubeconfig
 
 ```
 terraform output -raw kube_config > aks_kubeconfig
 kubectl --kubeconfig=aks_kubeconfig get svc
+
+
+# output
+NAME                TYPE           CLUSTER-IP   EXTERNAL-IP     PORT(S)        AGE
+kubernetes          ClusterIP      10.0.0.1     <none>          443/TCP        8m26s
+mariadb-service     ClusterIP      10.0.34.32   <none>          3306/TCP       6m26s
+wordpress-service   LoadBalancer   10.0.87.36   52.226.174.100   80:30892/TCP   6m26s
+
+
+open your brower and Browse website http://52.226.174.100
+```
+
+### Clean it
+
+```
+terraform destroy
 ```
 
 ## ref.
@@ -130,3 +146,9 @@ kubectl --kubeconfig=aks_kubeconfig get svc
 + https://akshayavb99.medium.com/hosting-wordpress-and-mysql-using-aws-kubernetes-and-terraform-efbb8c73950c
 
 + [在 Linux 上安裝 Azure CLI | Microsoft Learn](https://learn.microsoft.com/zh-tw/cli/azure/install-azure-cli-linux?pivots=apt)
+
+
+
+### Need to strengthen
+
++ use k8s secret to replace password
