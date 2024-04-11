@@ -135,7 +135,7 @@ resource "kubernetes_persistent_volume_claim" "mariadb-pvc" {
     }
   }
   spec {
-#   storage_class_name = "managed-csi"
+    storage_class_name = "managed-csi"
     access_modes = ["ReadWriteOnce"]
     resources {
       requests = {
@@ -143,6 +143,8 @@ resource "kubernetes_persistent_volume_claim" "mariadb-pvc" {
       }
     }
   }
+  # bypass WaitForFirstConsumer
+  wait_until_bound = false
 }
 
 ## 定義 mariadb
@@ -170,10 +172,11 @@ resource "kubernetes_deployment" "mariadb" {
       spec {
         volume {
           name = "mariadb-pvc"
-#         persistent_volume_claim {
-#            claim_name = kubernetes_persistent_volume_claim.mariadb-pvc.metadata.0.name
-#          }
+          persistent_volume_claim {
+            claim_name = kubernetes_persistent_volume_claim.mariadb-pvc.metadata.0.name
+          }
         }
+
         
         container {
           image = "mariadb:latest"
@@ -202,6 +205,11 @@ resource "kubernetes_deployment" "mariadb" {
           port {
             container_port = 3306
           }
+          
+          volume_mount {
+            mount_path = "/var/lib/mysql"
+            name       = kubernetes_persistent_volume_claim.mariadb-pvc.metadata.0.name
+        }
         }
       }
     }
